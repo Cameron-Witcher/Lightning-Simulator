@@ -35,13 +35,14 @@ public class Screen extends JPanel implements ActionListener {
 	boolean pause = false;
 	Timer timer;
 	Random random;
+	boolean useColors = false;
 	Color[] colors = new Color[] { Color.PINK, Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE,
 			Color.MAGENTA, Color.CYAN, Color.GRAY, Color.YELLOW };
 	List<Point> splits = new ArrayList<>();
-	int boxsize = 10;
-	int offsetAllowance = 10;
-	int speed = 1;
-	double splitChance = 0.1;
+	int boxsize = 1;
+	int offsetAllowance = 3;
+	int speed = 3;
+	double splitChance = 0.5;
 	int ground = -1;
 	boolean reset = false;
 
@@ -79,11 +80,8 @@ public class Screen extends JPanel implements ActionListener {
 
 	@Override
 	protected void paintComponent(Graphics g) {
+		
 
-		boxsize = 1;
-		speed = 1;
-		offsetAllowance = 3;
-		splitChance = 1.5;
 		super.paintComponent(g);
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
@@ -91,8 +89,16 @@ public class Screen extends JPanel implements ActionListener {
 //		reset = false;
 
 		for (Entry<Integer, LinkedList<Point>> e : points.entrySet()) {
+			if(useColors) {
+				if(e.getKey() > colors.length) {
+					g.setColor(colors[e.getKey()-colors.length]);
+				} else {
+					g.setColor(colors[e.getKey()]);
+				}
+			} else
+				g.setColor(Color.WHITE);
 //			g.setColor(colors[e.getKey()]);
-			g.setColor(Color.WHITE);
+			
 			if (e.getKey() == ground)
 				g.setColor(Color.RED);
 			Point lp = null;
@@ -212,6 +218,9 @@ public class Screen extends JPanel implements ActionListener {
 				unload();
 				load();
 				pause = false;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_C) {
+				useColors = !useColors;
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				pause();
