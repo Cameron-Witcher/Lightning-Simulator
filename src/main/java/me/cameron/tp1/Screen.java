@@ -41,7 +41,7 @@ public class Screen extends JPanel implements ActionListener {
 	int boxsize = 10;
 	int offsetAllowance = 10;
 	int speed = 1;
-	double splitChance = 1;
+	double splitChance = 0.1;
 	int ground = -1;
 	boolean reset = false;
 
