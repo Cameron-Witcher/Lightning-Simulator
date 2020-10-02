@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Lightning-Simulator" default="createjar" basedir=".">
+	<basename file="${basedir}" property="project.projectname" />
+	<target name="clean" description="Cleans project">
+	</target>
+	<target name="mvn">
+		<exec dir="." executable="sh">
+			<arg line="-c 'mvn install'" />
+		</exec>
+	</target>
+	<target name="createjar" description="Create a jar for the project" depends="mvn">
+	</target>
+</project>
