@@ -5,7 +5,7 @@
 	</target>
 	<target name="mvn">
 		<exec dir="." executable="sh">
-			<arg line="-c 'mvn install'" />
+			<arg line="-c 'mvn package'" />
 		</exec>
 	</target>
 	<target name="createjar" description="Create a jar for the project" depends="mvn">

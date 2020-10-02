@@ -1,31 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>me.cameron</groupId>
-	<artifactId>Lightning-Simulator</artifactId>
-	<version>1</version>
+	<artifactId>LightningSimulator</artifactId>
+	<packaging>jar</packaging>
+	<version>1.0-SNAPSHOT</version>
 	<name>Lightning-Simulator</name>
-	
+	<url>http://maven.apache.org</url>
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<main.class>me.cameron.tp1.Main</main.class>
 	</properties>
-
-	<dependencies>
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.16</version>
-		</dependency>
-	</dependencies>
 	<build>
-		<resources>
-			<resource>
-				<targetPath>.</targetPath>
-				<filtering>true</filtering>
-				<directory>src/main/resources</directory>
-			</resource>
-		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -34,25 +21,6 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>${main.class}</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.0.2</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>${main.class}</mainClass>
-						</manifest>
-					</archive>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -68,9 +36,60 @@
 					</execution>
 				</executions>
 				<configuration>
-					<createDependencyReducedPom>false</createDependencyReducedPom>
+					<shadedArtifactAttached>true</shadedArtifactAttached>
+					<shadedClassifierName>shaded</shadedClassifierName>
+					<transformers>
+						<transformer
+							implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+							<mainClass>${main.class}</mainClass>
+						</transformer>
+					</transformers>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>com.akathist.maven.plugins.launch4j</groupId>
+				<artifactId>launch4j-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>l4j-gui</id>
+						<phase>package</phase>
+						<goals>
+							<goal>launch4j</goal>
+						</goals>
+						<configuration>
+							<headerType>gui</headerType>
+							<outfile>target/${project.name}.exe</outfile>
+							<jar>target/${project.artifactId}-${project.version}.jar</jar>
+							<!-- if <dontWrapJar>true</dontWrapJar> change to this conf <jar>${project.artifactId}-${project.version}.jar</jar> -->
+							<dontWrapJar>false</dontWrapJar>
+							<errTitle>Error in launch4j plugin</errTitle>
+							<classPath>
+								<mainClass>${main.class}</mainClass>
+							</classPath>
+							<icon>application.ico</icon>
+							<jre>
+								<minVersion>1.5.0</minVersion>
+								<maxVersion>1.8.0</maxVersion>
+								<initialHeapSize>512</initialHeapSize>
+								<maxHeapSize>1024</maxHeapSize>
+							</jre>
+							<versionInfo>
+								<fileVersion>1.0.0.0</fileVersion>
+								<txtFileVersion>1.0.0.0</txtFileVersion>
+								<fileDescription>des</fileDescription>
+								<copyright>Copyright (c) 2014 </copyright>
+								<companyName>comp</companyName>
+								<productVersion>3.0.0.0</productVersion>
+								<txtProductVersion>${project.version}</txtProductVersion>
+								<productName>${project.name}</productName>
+								<internalName>${project.name}</internalName>
+								<originalFilename>${project.name}.exe</originalFilename>
+							</versionInfo>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 </project>
